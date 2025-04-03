@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fdf6f6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #dateForm {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        #message {
+            display: none;
+            background: #ffebf0;
+            color: #d63384;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 60%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            line-height: 1.6;
+            margin-top: 20px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        #message.show {
+            opacity: 1;
+            transform: scale(1);
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #ff6ea5; }
+            100% { box-shadow: 0 0 20px #ff3d85; }
+        }
+
+        #dateInput, #submitButton {
+            margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #dateInput {
+            cursor: pointer;
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        #submitButton {
+            background-color: #d63384;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        #submitButton:hover {
+            background-color: #b91c54;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0;
+            animation: fly 3s linear infinite;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(100vh) translateX(0); opacity: 1; }
+            100% { transform: translateY(-10vh) translateX(calc(-50vw + 100vw * random())); opacity: 0; }
+        }
+
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: white;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(5); opacity: 1; }
+            100% { transform: scale(8); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <form id="dateForm">
+        <label for="dateInput">Enter a date:</label>
+        <input type="date" id="dateInput" required>
+        <button type="submit" id="submitButton">Submit</button>
+    </form>
+
+    <div id="message">
+        <p>🎉 Thurigaaa...indha peru naa unaku vechadhu...enaku unna rombha <br>
+            pudikum...nee en roommate aairundha bodhum tarika va irundha <br>
+            bodhum ipo thurigaa va irundha bodhum...Happy 18 gurlll!!! Faced <br>
+            many unwanted flaws in life and still chasing dreams...naa daily <br>
+            rendavadha mulikura face unodadhu dhan...you are being a secret <br>
+            motivation for me...DON'T GO ANYWHERE GURL...STAY BY <br>
+            MY SIDE ALWAYS!!! 🎊</p>
+    </div>
+
+    <script>
+        document.getElementById("dateForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevents page reload
+
+            let selectedDate = document.getElementById("dateInput").value;
+            
+            if (selectedDate) {
+                let dateObj = new Date(selectedDate);
+                let day = dateObj.getDate();
+                let month = dateObj.getMonth() + 1; // Months are zero-based
+                let year = dateObj.getFullYear();
+
+                if (day === 4 && month === 4 && year === 2007) {
+                    let messageDiv = document.getElementById("message");
+                    messageDiv.style.display = "block"; // Show message
+                    setTimeout(() => messageDiv.classList.add("show"), 100); // Add animation class
+
+                    document.getElementById("dateForm").style.display = "none"; // Hide form
+
+                    createEmojis(); // Call function to create flying emojis
+                    createFireworks(); // Call function to create fireworks
+                } else {
+                    alert("Wrong date! Try again.");
+                }
+            } else {
+                alert("Please select a date.");
+            }
+        });
+
+        function createEmojis() {
+            let emojis = ["🎉", "🎊", "💖", "✨", "🎶", "💃"];
+            for (let i = 0; i < 20; i++) {
+                let emoji = document.createElement("div");
+                emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.classList.add("emoji");
+
+                let startX = Math.random() * window.innerWidth; 
+                let duration = Math.random() * 3 + 2; // 2s - 5s animation duration
+
+                emoji.style.left = `${startX}px`;
+                emoji.style.animationDuration = `${duration}s`;
+
+                document.body.appendChild(emoji);
+
+                setTimeout(() => {
+                    emoji.remove(); // Remove emoji after animation ends
+                }, duration * 1000);
+            }
+        }
+
+        function createFireworks() {
+            for (let i = 0; i < 5; i++) {
+                let firework = document.createElement("div");
+                firework.classList.add("firework");
+
+                let posX = Math.random() * window.innerWidth;
+                let posY = Math.random() * window.innerHeight * 0.5; // Appear in upper half
+
+                firework.style.left = `${posX}px`;
+                firework.style.top = `${posY}px`;
+
+                document.body.appendChild(firework);
+
+                setTimeout(() => {
+                    firework.remove();
+                }, 1000);
+            }
+
+            setTimeout(createFireworks, 2000); // Keep firing every 2s
+        }
+    </script>
+
+</body>
+</html>
